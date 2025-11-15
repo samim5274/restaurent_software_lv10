@@ -131,99 +131,46 @@
                 </a>
                 <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
                     <div class="dropdown-header">
-                    <div class="d-flex mb-1">
-                        <div class="flex-shrink-0">
-                        <img src="{{ asset('img/employee/' . Auth::guard('admin')->user()->photo) }}" alt="user-image" class="user-avtar wid-35">
+                        <div class="d-flex mb-1">
+                            <div class="flex-shrink-0">
+                            <img src="{{ asset('img/employee/' . Auth::guard('admin')->user()->photo) }}" alt="user-image" class="user-avtar wid-35">
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                            <h6 class="mb-1">{{ Auth::guard('admin')->user()->name }}</h6>
+                            @php
+                                $roleName = match(Auth::guard('admin')->user()?->role) {
+                                    1 => 'Admin',
+                                    2 => 'Manager',
+                                    3 => 'Chef',
+                                    4 => 'Waiter',
+                                    default => 'Unknown',
+                                };
+                            @endphp
+                            <span>{{ $roleName }}</span>
+                            </div>
+                            <a href="{{route('logout')}}" class="pc-head-link bg-transparent"><i class="ti ti-power text-danger"></i></a>
                         </div>
-                        <div class="flex-grow-1 ms-3">
-                        <h6 class="mb-1">{{ Auth::guard('admin')->user()->name }}</h6>
-                        @php
-                            $roleName = match(Auth::guard('admin')->user()?->role) {
-                                1 => 'Admin',
-                                2 => 'Manager',
-                                3 => 'Chef',
-                                4 => 'Waiter',
-                                default => 'Unknown',
-                            };
-                        @endphp
-                        <span>{{ $roleName }}</span>
-                        </div>
-                        <a href="{{route('logout')}}" class="pc-head-link bg-transparent"><i class="ti ti-power text-danger"></i></a>
-                    </div>
                     </div>
                     <ul class="nav drp-tabs nav-fill nav-tabs" id="mydrpTab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button
-                        class="nav-link active"
-                        id="drp-t1"
-                        data-bs-toggle="tab"
-                        data-bs-target="#drp-tab-1"
-                        type="button"
-                        role="tab"
-                        aria-controls="drp-tab-1"
-                        aria-selected="true"
-                        ><i class="ti ti-user"></i> Profile</button
-                        >
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button
-                        class="nav-link"
-                        id="drp-t2"
-                        data-bs-toggle="tab"
-                        data-bs-target="#drp-tab-2"
-                        type="button"
-                        role="tab"
-                        aria-controls="drp-tab-2"
-                        aria-selected="false"
-                        ><i class="ti ti-settings"></i> Setting</button
-                        >
-                    </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="drp-t1" data-bs-toggle="tab" data-bs-target="#drp-tab-1" type="button" role="tab" aria-controls="drp-tab-1" aria-selected="true" ><i class="ti ti-user"></i> Profile</button >
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="drp-t2" data-bs-toggle="tab" data-bs-target="#drp-tab-2" type="button" role="tab" aria-controls="drp-tab-2"
+                            aria-selected="false"><i class="ti ti-settings"></i> Setting</button>
+                        </li>
                     </ul>
                     <div class="tab-content" id="mysrpTabContent">
-                    <div class="tab-pane fade show active" id="drp-tab-1" role="tabpanel" aria-labelledby="drp-t1" tabindex="0">
-                        <a href="#!" class="dropdown-item">
-                        <i class="ti ti-edit-circle"></i>
-                        <span>Edit Profile</span>
-                        </a>
-                        <a href="#!" class="dropdown-item">
-                        <i class="ti ti-user"></i>
-                        <span>View Profile</span>
-                        </a>
-                        <a href="#!" class="dropdown-item">
-                        <i class="ti ti-clipboard-list"></i>
-                        <span>Social Profile</span>
-                        </a>
-                        <a href="#!" class="dropdown-item">
-                        <i class="ti ti-wallet"></i>
-                        <span>Billing</span>
-                        </a>
-                        <a href="{{route('logout')}}" class="dropdown-item">
-                        <i class="ti ti-power"></i>
-                        <span>Logout</span>
-                        </a>
-                    </div>
-                    <div class="tab-pane fade" id="drp-tab-2" role="tabpanel" aria-labelledby="drp-t2" tabindex="0">
-                        <a href="#!" class="dropdown-item">
-                        <i class="ti ti-help"></i>
-                        <span>Support</span>
-                        </a>
-                        <a href="#!" class="dropdown-item">
-                        <i class="ti ti-user"></i>
-                        <span>Account Settings</span>
-                        </a>
-                        <a href="#!" class="dropdown-item">
-                        <i class="ti ti-lock"></i>
-                        <span>Privacy Center</span>
-                        </a>
-                        <a href="#!" class="dropdown-item">
-                        <i class="ti ti-messages"></i>
-                        <span>Feedback</span>
-                        </a>
-                        <a href="#!" class="dropdown-item">
-                        <i class="ti ti-list"></i>
-                        <span>History</span>
-                        </a>
-                    </div>
+                        <div class="tab-pane fade show active" id="drp-tab-1" role="tabpanel" aria-labelledby="drp-t1" tabindex="0">                        
+                            <a href="{{ route('user-profile-view') }}" class="dropdown-item"><i class="ti ti-user"></i><span>View Profile</span></a>
+                            <a href="#!" class="dropdown-item"><i class="ti ti-wallet"></i><span>Billing</span></a>
+                            <a href="{{route('logout')}}" class="dropdown-item"><i class="ti ti-power"></i><span>Logout</span></a>
+                        </div>
+                        <div class="tab-pane fade" id="drp-tab-2" role="tabpanel" aria-labelledby="drp-t2" tabindex="0">
+                            <a href="#!" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="ti ti-help"></i><span>Support</span></a>
+                            <a href="{{ route('all-user') }}" class="dropdown-item"><i class="ti ti-user"></i><span>Permission</span></a>
+                            <a href="#!" class="dropdown-item"><i class="ti ti-list"></i><span>History</span></a>
+                        </div>
                     </div>
                 </div>
                 </li>
@@ -231,3 +178,78 @@
         </div>
     </div>
 </header>
+
+<!-- Support Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="staticBackdropLabel">Contact Support</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <div class="modal-body py-5">
+                <div class="text-center mb-5">
+                    <h2>Need Help? Contact Us with Developer only</h2>
+                    <p class="text-muted">We’re here to assist you 24/7 via your preferred communication channel.</p>
+                </div>
+
+                <div class="row g-4 justify-content-center px-3">
+
+                    <!-- Phone -->
+                    <div class="col-md-3 col-sm-6">
+                        <div class="card h-100 shadow-sm border-0 text-center p-4">
+                            <div class="mb-3">
+                                <i class="bi bi-telephone-fill fs-2 text-primary"></i>
+                            </div>
+                            <h5>Call Us</h5>
+                            <p class="text-muted">Available 9am - 10pm</p>
+                            <a href="tel:+8801762164746" class="btn btn-outline-primary btn-sm">+880 1762-164746</a>
+                        </div>
+                    </div>
+
+                    <!-- WhatsApp -->
+                    <div class="col-md-3 col-sm-6">
+                        <div class="card h-100 shadow-sm border-0 text-center p-4">
+                            <div class="mb-3">
+                                <i class="bi bi-whatsapp fs-2 text-success"></i>
+                            </div>
+                            <h5>WhatsApp</h5>
+                            <p class="text-muted">Chat with our agent</p>
+                            <a href="https://wa.me/+8801762164746" target="_blank" class="btn btn-outline-success btn-sm">Start Chat</a>
+                        </div>
+                    </div>
+
+                    <!-- Telegram -->
+                    <div class="col-md-3 col-sm-6">
+                        <div class="card h-100 shadow-sm border-0 text-center p-4">
+                            <div class="mb-3">
+                                <i class="bi bi-telegram fs-2 text-info"></i>
+                            </div>
+                            <h5>Telegram</h5>
+                            <p class="text-muted">Send us a message</p>
+                            <a href="https://t.me/SAMIMHosseN5274" target="_blank" class="btn btn-outline-info btn-sm">SAMIM-HosseN</a>
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="col-md-3 col-sm-6">
+                        <div class="card h-100 shadow-sm border-0 text-center p-4">
+                            <div class="mb-3">
+                                <i class="bi bi-envelope-fill fs-2 text-danger"></i>
+                            </div>
+                            <h5>Email</h5>
+                            <p class="text-muted">Get support via email</p>
+                            <a href="mailto:cse.shamim.cub@gmail.com" class="btn btn-outline-danger btn-sm">cse.shamim.cub@gmail.com</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
