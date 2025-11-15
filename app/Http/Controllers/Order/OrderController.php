@@ -85,7 +85,8 @@ class OrderController extends Controller
         $cart = Cart::where('reg', $reg)->with('food')->get();
         $order = Order::where('reg', $reg)->with('user')->first();
         $company = Company::first();
-        return view('food.print.invoice-print', compact('cart', 'company','order'));
+        $dueCollection = DueCollection::where('reg', $reg)->first();
+        return view('food.print.invoice-print', compact('cart', 'company','order','dueCollection'));
     }
 
     public function orderDetails(){

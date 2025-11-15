@@ -187,11 +187,11 @@
         </tr>
         <tr>
             <td>Paid:</td>
-            <td>৳{{ number_format($order->pay, 2) }}</td>
+            <td>৳{{ number_format(($order->pay ?? 0) + ($dueCollection->pay ?? 0), 2) }}</td>
         </tr>
         <tr>
             <td class="final-total">Due:</td>
-            <td class="final-total">৳{{ number_format($order->due, 2) }}</td>
+            <td class="final-total">৳{{ number_format(($order->due ?? 0) - ($dueCollection->pay ?? 0) - ($dueCollection->discount ?? 0), 2) }}</td>
         </tr>
     </table>
 
