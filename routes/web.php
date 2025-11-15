@@ -73,4 +73,8 @@ Route::group(['middleware' => ['admin']], function (){
     Route::get('/expenses', [ExpensesController::class, 'index'])->name('daily-expenses');
     Route::get('/get-subcategories/{categoryId}', [ExpensesController::class, 'getSubcategories']);
     Route::post('/create-expenses', [ExpensesController::class, 'create']);
+    Route::get('/expenses-setting', [ExpensesController::class, 'setting'])->name('expenses-setting-view');
+    Route::post('/create-expenses-category', [ExpensesController::class, 'createCategory']);
+    Route::post('/create-sub-category-expenses', [ExpensesController::class, 'createSubCategory']);
+    Route::get('/print-expenses-invoice/{id}', [ExpensesController::class, 'printExInv']);
 });

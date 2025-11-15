@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 15, 2025 at 08:57 AM
+-- Generation Time: Nov 15, 2025 at 11:31 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -269,6 +269,17 @@ CREATE TABLE `expenses` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `expenses`
+--
+
+INSERT INTO `expenses` (`id`, `category_id`, `subcategory_id`, `user_id`, `title`, `description`, `amount`, `expense_date`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 1, 'Bazar', 'Bazar', 1000.00, '2025-11-15', '2025-11-15 08:19:15', '2025-11-15 08:19:15'),
+(2, 1, 1, 1, 'Bazar', 'Bazar', 1000.00, '2025-11-15', '2025-11-15 08:21:03', '2025-11-15 08:21:03'),
+(3, 1, 1, 1, 'Bazar', 'Bazar', 1000.00, '2025-11-15', '2025-11-15 08:21:20', '2025-11-15 08:21:20'),
+(4, 3, 9, 1, 'Bazar', 'N/A', 500.00, '2025-11-15', '2025-11-15 09:10:34', '2025-11-15 09:10:34'),
+(5, 3, 9, 1, 'Bazar', 'N/A', 120.00, '2025-11-15', '2025-11-15 09:11:20', '2025-11-15 09:11:20');
+
 -- --------------------------------------------------------
 
 --
@@ -282,6 +293,18 @@ CREATE TABLE `expense_categories` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `expense_categories`
+--
+
+INSERT INTO `expense_categories` (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES
+(1, 'Office', 'Office related expenses', '2025-11-15 08:00:33', '2025-11-15 08:00:33'),
+(2, 'Food', 'Food & Beverages', '2025-11-15 08:00:33', '2025-11-15 08:00:33'),
+(3, 'Travel', 'Travel and transportation', '2025-11-15 08:00:33', '2025-11-15 08:00:33'),
+(4, 'Utilities', 'Electricity, Water, Internet, etc.', '2025-11-15 08:00:33', '2025-11-15 08:00:33'),
+(5, 'Maintenance', 'Repairs & maintenance', '2025-11-15 08:00:33', '2025-11-15 08:00:33'),
+(6, 'Other', 'N/A', '2025-11-15 09:31:58', '2025-11-15 09:31:58');
 
 -- --------------------------------------------------------
 
@@ -297,6 +320,29 @@ CREATE TABLE `expense_subcategories` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `expense_subcategories`
+--
+
+INSERT INTO `expense_subcategories` (`id`, `category_id`, `name`, `description`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Stationery', 'Stationery expense under Office', '2025-11-15 08:00:45', '2025-11-15 08:00:45'),
+(2, 1, 'Software', 'Software expense under Office', '2025-11-15 08:00:45', '2025-11-15 08:00:45'),
+(3, 1, 'Hardware', 'Hardware expense under Office', '2025-11-15 08:00:45', '2025-11-15 08:00:45'),
+(4, 2, 'Snacks', 'Snacks expense under Food', '2025-11-15 08:00:45', '2025-11-15 08:00:45'),
+(5, 2, 'Lunch', 'Lunch expense under Food', '2025-11-15 08:00:45', '2025-11-15 08:00:45'),
+(6, 2, 'Beverages', 'Beverages expense under Food', '2025-11-15 08:00:45', '2025-11-15 08:00:45'),
+(7, 3, 'Taxi', 'Taxi expense under Travel', '2025-11-15 08:00:45', '2025-11-15 08:00:45'),
+(8, 3, 'Bus', 'Bus expense under Travel', '2025-11-15 08:00:45', '2025-11-15 08:00:45'),
+(9, 3, 'Flight', 'Flight expense under Travel', '2025-11-15 08:00:45', '2025-11-15 08:00:45'),
+(10, 4, 'Electricity', 'Electricity expense under Utilities', '2025-11-15 08:00:45', '2025-11-15 08:00:45'),
+(11, 4, 'Water', 'Water expense under Utilities', '2025-11-15 08:00:45', '2025-11-15 08:00:45'),
+(12, 4, 'Internet', 'Internet expense under Utilities', '2025-11-15 08:00:45', '2025-11-15 08:00:45'),
+(13, 4, 'Gas', 'Gas expense under Utilities', '2025-11-15 08:00:45', '2025-11-15 08:00:45'),
+(14, 5, 'Plumbing', 'Plumbing expense under Maintenance', '2025-11-15 08:00:45', '2025-11-15 08:00:45'),
+(15, 5, 'Electrical', 'Electrical expense under Maintenance', '2025-11-15 08:00:45', '2025-11-15 08:00:45'),
+(16, 5, 'Cleaning', 'Cleaning expense under Maintenance', '2025-11-15 08:00:45', '2025-11-15 08:00:45'),
+(17, 6, 'Other', 'N/A', '2025-11-15 09:39:16', '2025-11-15 09:39:16');
 
 -- --------------------------------------------------------
 
@@ -868,19 +914,19 @@ ALTER TABLE `due_collections`
 -- AUTO_INCREMENT for table `expenses`
 --
 ALTER TABLE `expenses`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `expense_categories`
 --
 ALTER TABLE `expense_categories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `expense_subcategories`
 --
 ALTER TABLE `expense_subcategories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`

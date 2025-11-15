@@ -53,7 +53,7 @@
             <div class="page-header">
                 <div class="page-block">
                     <div class="row align-items-center">
-                        <h2>Expeses Details</h2>
+                        <h2>Expeses Details - <small>Total Expenses: {{ $expenses->sum('amount') }}/-</small></h2>
                         <div class="col-md-12">
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
@@ -105,7 +105,7 @@
                                         <!-- Description -->
                                         <div class="mt-3">
                                             <label for="description" class="form-label">Description (optional)</label>
-                                            <textarea name="description" id="description" class="form-control form-control-lg" rows="4" placeholder="Enter expense details"></textarea>
+                                            <textarea name="description" id="description" class="form-control form-control-lg" rows="4" placeholder="Enter expense details">N/A</textarea>
                                         </div>
 
                                         <div class="row g-3 mt-3 mb-3">
@@ -120,7 +120,7 @@
 
                                         <!-- Submit Button -->
                                         <div class="d-grid">
-                                            <button type="submit" class="btn btn-success btn-md d-flex align-items-center justify-content-center gap-2">
+                                            <button type="submit" class="btn btn-success btn-md d-flex align-items-center justify-content-center gap-2" onclick="return confirm('Are you sure you want save this Expenses?')">
                                                 <i class="mdi mdi-plus-circle-outline" style="font-size: 1.5rem;"></i>
                                                 <span>Add Expense</span>
                                             </button>
@@ -132,51 +132,46 @@
                                 <!-- Right side (Form) -->
                                 <div class="col-md-4">
                                     <div class="table-responsive">
-                                        <table class="table table-hover table-bordered align-middle">
-                                            <thead class="table-primary text-center">
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>Title</th>
-                                                    <th>Category</th>
-                                                    <th>Subcategory</th>
-                                                    <th>Amount</th>
-                                                    <th>Expense Date</th>
-                                                    <th>Description</th>
-                                                    <th>Created By</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @forelse($expenses as $key => $val)
-                                                <tr>
-                                                    <td class="text-center">{{ $key + 1 }}</td>
-                                                    <td>{{ $val->title }}</td>
-                                                    <td>{{ $val->category->name ?? '-' }}</td>
-                                                    <td>{{ $val->subcategory->name ?? '-' }}</td>
-                                                    <td class="text-end">{{ number_format($val->amount, 2) }}</td>
-                                                    <td class="text-center">{{ \Carbon\Carbon::parse($val->expense_date)->format('d-m-Y') }}</td>
-                                                    <td>{{ $val->description ?? '-' }}</td>
-                                                    <td>{{ $val->user->name ?? '-' }}</td>
-                                                    <td class="text-center">
-                                                        <a href="{{ url('/expenses/edit/'.$val->id) }}" class="btn btn-sm btn-warning">
-                                                            <i class="mdi mdi-pencil"></i>
-                                                        </a>
-                                                        <form action="{{ url('/expenses/delete/'.$val->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?');">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button class="btn btn-sm btn-danger">
-                                                                <i class="mdi mdi-delete"></i>
-                                                            </button>
-                                                        </form>
-                                                    </td>
-                                                </tr>
-                                                @empty
-                                                <tr>
-                                                    <td colspan="9" class="text-center text-danger">No expenses found.</td>
-                                                </tr>
-                                                @endforelse
-                                            </tbody>
-                                        </table>
+                                        <div style="max-height: 600px; overflow-y: auto;">
+                                            <table class="table table-borderless mb-0">
+                                                <tbody>
+                                                    @forelse($expenses as $key => $val)
+                                                    <tr>
+                                                        <td>
+                                                            <div class="d-flex flex-column gap-2 p-3 border rounded shadow-sm">
+                                                                <div class="d-flex justify-content-between align-items-center">
+                                                                    <strong>#{{ $key + 1 }} - {{ $val->title }} - {{ number_format($val->amount, 2) }}/-</strong>
+                                                                    <span class="text-muted small">{{ \Carbon\Carbon::parse($val->expense_date)->format('d-m-Y') }}</span>
+                                                                </div>
+
+                                                                <div class="d-flex flex-wrap gap-2 mt-1">
+                                                                    <span class="badge bg-primary">Category: {{ $val->category->name ?? '-' }}</span>
+                                                                    <span class="badge bg-secondary">Subcategory: {{ $val->subcategory->name ?? '-' }}</span>
+                                                                    <span class="badge bg-success">Amount: {{ number_format($val->amount, 2) }}</span>
+                                                                    <span class="badge bg-info text-dark">By: {{ $val->user->name ?? '-' }}</span>
+                                                                </div>
+
+                                                                
+                                                                <div class="d-flex justify-content-between align-items-center mt-1">                                                                    
+                                                                    <div>
+                                                                        <em class="text-muted small">Description: {{ $val->description ?? 'N/A' }}</em>
+                                                                    </div>
+                                                                    <div>
+                                                                        <a href="{{ url('/print-expenses-invoice/'.$val->id) }}" target="_blank"><i class="fa-solid fa-print" style="cursor:pointer;"></i></a>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    @empty
+                                                    <tr>
+                                                        <td class="text-center text-danger py-3">No expenses found.</td>
+                                                    </tr>
+                                                    @endforelse
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div> <!-- End inner row -->

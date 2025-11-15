@@ -49,4 +49,49 @@ class ExpensesController extends Controller
 
         return redirect()->back()->with('success', 'Expense added successfully!');
     }
+
+    public function setting(){
+        $company = Company::first();
+        $categories = ExpenseCategory::all();
+        $subCategory = ExpenseSubcategory::with('category')->get();
+        return view('expenses.expenses-setting', compact('company','categories','subCategory'));
+    }
+
+    public function createCategory(Request $request){
+        $request->validate([
+            'name' => 'required|string|max:255|unique:expense_categories,name',
+            'description' => 'nullable|string|max:1000',
+        ]);
+
+        $data = new ExpenseCategory();
+        $data->name = $request->name;
+        $data->description = $request->description;
+        $data->save();
+
+        return redirect()->back()->with('success', 'Expense category added successfully!');
+    }
+
+    public function createSubCategory(Request $request){
+        $request->validate([
+            'category_id' => 'required|exists:expense_categories,id',
+            'name' => 'required|string|max:255|unique:expense_subcategories,name',
+            'description' => 'nullable|string|max:1000',
+        ]);
+
+        $data = new ExpenseSubcategory();
+        $data->category_id = $request->category_id;
+        $data->name = $request->name;
+        $data->description = $request->description;
+        $data->save();
+        return redirect()->back()->with('success', 'Expense Sub-category added successfully!');
+    }
+
+    public function printExInv($id){
+        $company = Company::first();
+        $expenses = Expense::where('id', $id)->first();
+        if(empty($expenses)){
+            return redirect()->back()->with('error', 'Expenses invoice not found. Please try another. Thank You!');
+        }
+        return view('expenses.print.print-expenses-invoice', compact('company', 'expenses'));
+    }
 }
