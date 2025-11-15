@@ -44,4 +44,9 @@ class Admin extends Authenticatable
     {
         return $this->hasMany(DueCollection::class, 'user_id');
     }
+
+    public function expenses()
+    {
+        return $this->hasMany(Expense::class, 'user_id');
+    }
 }

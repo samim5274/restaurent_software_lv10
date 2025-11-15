@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 15, 2025 at 08:48 AM
+-- Generation Time: Nov 15, 2025 at 08:57 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -253,6 +253,54 @@ INSERT INTO `due_collections` (`id`, `reg`, `total`, `discount`, `due`, `pay`, `
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `expenses`
+--
+
+CREATE TABLE `expenses` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `category_id` bigint(20) UNSIGNED NOT NULL,
+  `subcategory_id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `expense_date` date NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `expense_categories`
+--
+
+CREATE TABLE `expense_categories` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `expense_subcategories`
+--
+
+CREATE TABLE `expense_subcategories` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `category_id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `failed_jobs`
 --
 
@@ -375,7 +423,10 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (77, '2025_11_10_095452_create_companies_table', 2),
 (78, '2025_11_10_100934_create_payment_methods_table', 2),
 (79, '2025_11_10_123159_create_orders_table', 2),
-(80, '2025_11_11_075416_create_due_collections_table', 3);
+(80, '2025_11_11_075416_create_due_collections_table', 3),
+(81, '2025_11_15_135339_create_expense_categories_table', 4),
+(82, '2025_11_15_135414_create_expense_subcategories_table', 4),
+(83, '2025_11_15_135503_create_expenses_table', 4);
 
 -- --------------------------------------------------------
 
@@ -687,6 +738,29 @@ ALTER TABLE `due_collections`
   ADD KEY `due_collections_user_id_foreign` (`user_id`);
 
 --
+-- Indexes for table `expenses`
+--
+ALTER TABLE `expenses`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `expenses_category_id_foreign` (`category_id`),
+  ADD KEY `expenses_subcategory_id_foreign` (`subcategory_id`),
+  ADD KEY `expenses_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `expense_categories`
+--
+ALTER TABLE `expense_categories`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `expense_categories_name_unique` (`name`);
+
+--
+-- Indexes for table `expense_subcategories`
+--
+ALTER TABLE `expense_subcategories`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `expense_subcategories_category_id_foreign` (`category_id`);
+
+--
 -- Indexes for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
@@ -791,6 +865,24 @@ ALTER TABLE `due_collections`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
+-- AUTO_INCREMENT for table `expenses`
+--
+ALTER TABLE `expenses`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `expense_categories`
+--
+ALTER TABLE `expense_categories`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `expense_subcategories`
+--
+ALTER TABLE `expense_subcategories`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
@@ -812,7 +904,7 @@ ALTER TABLE `food_categories`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -853,6 +945,20 @@ ALTER TABLE `users`
 --
 ALTER TABLE `due_collections`
   ADD CONSTRAINT `due_collections_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `admins` (`id`);
+
+--
+-- Constraints for table `expenses`
+--
+ALTER TABLE `expenses`
+  ADD CONSTRAINT `expenses_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `expense_categories` (`id`),
+  ADD CONSTRAINT `expenses_subcategory_id_foreign` FOREIGN KEY (`subcategory_id`) REFERENCES `expense_subcategories` (`id`),
+  ADD CONSTRAINT `expenses_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `admins` (`id`);
+
+--
+-- Constraints for table `expense_subcategories`
+--
+ALTER TABLE `expense_subcategories`
+  ADD CONSTRAINT `expense_subcategories_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `expense_categories` (`id`);
 
 --
 -- Constraints for table `food`

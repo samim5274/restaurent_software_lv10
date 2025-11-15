@@ -9,6 +9,7 @@ use App\Http\Controllers\Food\CartController;
 use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\Kitchen\KitchenController;
 use App\Http\Controllers\Stock\StockController;
+use App\Http\Controllers\Expenses\ExpensesController;
 
 Auth::routes();
 
@@ -68,4 +69,8 @@ Route::group(['middleware' => ['admin']], function (){
     Route::get('/stock', [StockController::class, 'index'])->name('food-stock-view');
     Route::get('/live-search-food-stock', [StockController::class, 'liveSearch']);
     Route::post('/insert/stock', [StockController::class, 'insert']);
+
+    Route::get('/expenses', [ExpensesController::class, 'index'])->name('daily-expenses');
+    Route::get('/get-subcategories/{categoryId}', [ExpensesController::class, 'getSubcategories']);
+    Route::post('/create-expenses', [ExpensesController::class, 'create']);
 });

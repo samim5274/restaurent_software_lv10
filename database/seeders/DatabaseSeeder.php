@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
             FoodSeeder::class,
             CompanySeeder::class,
             PaymentSeeder::class,
+            ExpenseCategorySeeder::class,
+            ExpenseSubcategorySeeder::class,
         ]);
     }
 }

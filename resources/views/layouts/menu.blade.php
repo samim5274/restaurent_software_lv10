@@ -102,7 +102,7 @@
                 <li class="pc-item pc-hasmenu">
                     <a href="#" class="pc-link"><span class="pc-micon"><i class="fa-solid fa-comments-dollar"></i></span><span class="pc-mtext">Accounts</span><span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
                     <ul class="pc-submenu">
-                        <li class="pc-item"><a class="pc-link" href="#"><i class="fa-solid fa-sack-dollar"></i> Daily Expenses</a></li>
+                        <li class="pc-item"><a class="pc-link" href="{{ route('daily-expenses') }}"><i class="fa-solid fa-sack-dollar"></i> Daily Expenses</a></li>
                         <li class="pc-item"><a class="pc-link" href="#"><i class="fa-solid fa-filter-circle-dollar"></i> Setting</a></li>
                         <li class="pc-item pc-hasmenu">
                             <a href="#" class="pc-link"><i class="fa-solid fa-money-check-dollar"></i> Account Report<span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
