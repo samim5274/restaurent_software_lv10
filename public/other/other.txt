@@ -1,0 +1,31 @@
+protected $fillable = [
+        'date',
+        'user_id',
+        'reg',
+        'total',
+        'discount',
+        'vat',
+        'payable',
+        'pay',
+        'due',
+        'kitchen',
+        'paymentMethod',
+        'customerName',
+        'customerPhone',
+        'status'
+    ];
+
+    $table->date('date');
+            $table->foreignId('user_id')->constrained('admins')->onDelete('restrict');
+            $table->unsignedBigInteger('reg')->unique();
+            $table->decimal('total', 12, 2)->nullable();
+            $table->decimal('discount', 12, 2)->nullable();
+            $table->decimal('vat', 12, 2)->nullable();
+            $table->decimal('payable', 12, 2)->nullable();
+            $table->decimal('pay', 12, 2)->nullable();
+            $table->decimal('due', 12, 2)->nullable();
+            $table->unsignedInteger('kitchen')->default(0);
+            $table->Integer('paymentMethod')->constrained('payment_methods')->onDelete('restrict');
+            $table->string('customerName')->default(0);
+            $table->Integer('customerPhone')->default(0);
+            $table->Integer('status')->default(0);

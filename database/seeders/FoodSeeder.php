@@ -1,0 +1,248 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
+
+use App\Models\Food;
+use App\Models\FoodCategory;
+
+class FoodSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        $categories = FoodCategory::pluck('id')->toArray();
+
+        $foods = [
+            [
+                'name' => 'Cheese Burger',
+                'price' => 250,
+                'category_id' => $categories[0] ?? 1,
+                'stock' => 50,
+                'status' => 1,
+                'image' => 'cheese_burger.jpg',
+                'ingredients' => 'Bun, Cheese, Patty, Lettuce, Tomato',
+                'sku' => Str::upper(Str::random(8)),
+                'remark' => 'Best seller',
+            ],
+            [
+                'name' => 'Pepperoni Pizza',
+                'price' => 800,
+                'category_id' => $categories[1] ?? 2,
+                'stock' => 30,
+                'status' => 1,
+                'image' => 'pepperoni_pizza.jpg',
+                'ingredients' => 'Dough, Cheese, Pepperoni, Tomato Sauce',
+                'sku' => Str::upper(Str::random(8)),
+                'remark' => 'Spicy and hot',
+            ],
+            [
+                'name' => 'Chicken Sandwich',
+                'price' => 180,
+                'category_id' => $categories[2] ?? 3,
+                'stock' => 40,
+                'status' => 1,
+                'image' => 'chicken_sandwich.jpg',
+                'ingredients' => 'Bread, Chicken, Lettuce, Mayo',
+                'sku' => Str::upper(Str::random(8)),
+                'remark' => '',
+            ],
+            [
+                'name' => 'Spaghetti Bolognese',
+                'price' => 350,
+                'category_id' => $categories[3] ?? 4,
+                'stock' => 20,
+                'status' => 1,
+                'image' => 'spaghetti.jpg',
+                'ingredients' => 'Spaghetti, Tomato Sauce, Beef',
+                'sku' => Str::upper(Str::random(8)),
+                'remark' => '',
+            ],
+            [
+                'name' => 'Caesar Salad',
+                'price' => 200,
+                'category_id' => $categories[4] ?? 5,
+                'stock' => 25,
+                'status' => 1,
+                'image' => 'caesar_salad.jpg',
+                'ingredients' => 'Lettuce, Chicken, Caesar Dressing, Croutons',
+                'sku' => Str::upper(Str::random(8)),
+                'remark' => '',
+            ],
+            [
+                'name' => 'Chocolate Cake',
+                'price' => 150,
+                'category_id' => $categories[5] ?? 6,
+                'stock' => 15,
+                'status' => 1,
+                'image' => 'chocolate_cake.jpg',
+                'ingredients' => 'Flour, Cocoa, Sugar, Eggs, Butter',
+                'sku' => Str::upper(Str::random(8)),
+                'remark' => 'Sweet dessert',
+            ],
+            [
+                'name' => 'Coca Cola',
+                'price' => 60,
+                'category_id' => $categories[6] ?? 7,
+                'stock' => 100,
+                'status' => 1,
+                'image' => 'coca_cola.jpg',
+                'ingredients' => 'Carbonated Water, Sugar, Flavor',
+                'sku' => Str::upper(Str::random(8)),
+                'remark' => '',
+            ],
+            [
+                'name' => 'Grilled Salmon',
+                'price' => 900,
+                'category_id' => $categories[7] ?? 8,
+                'stock' => 10,
+                'status' => 1,
+                'image' => 'grilled_salmon.jpg',
+                'ingredients' => 'Salmon, Lemon, Spices',
+                'sku' => Str::upper(Str::random(8)),
+                'remark' => 'Premium dish',
+            ],
+            [
+                'name' => 'BBQ Chicken',
+                'price' => 500,
+                'category_id' => $categories[8] ?? 9,
+                'stock' => 20,
+                'status' => 1,
+                'image' => 'bbq_chicken.jpg',
+                'ingredients' => 'Chicken, BBQ Sauce, Spices',
+                'sku' => Str::upper(Str::random(8)),
+                'remark' => '',
+            ],
+            [
+                'name' => 'Pancakes',
+                'price' => 120,
+                'category_id' => $categories[9] ?? 10,
+                'stock' => 30,
+                'status' => 1,
+                'image' => 'pancakes.jpg',
+                'ingredients' => 'Flour, Eggs, Milk, Sugar, Butter',
+                'sku' => Str::upper(Str::random(8)),
+                'remark' => 'Breakfast special',
+            ],
+            [
+                'name' => 'Veggie Burger',
+                'price' => 220,
+                'category_id' => $categories[0] ?? 1,
+                'stock' => 40,
+                'status' => 1,
+                'image' => 'veggie_burger.jpg',
+                'ingredients' => 'Bun, Veg Patty, Lettuce, Tomato, Cheese',
+                'sku' => Str::upper(Str::random(8)),
+                'remark' => '',
+            ],
+            [
+                'name' => 'Margherita Pizza',
+                'price' => 700,
+                'category_id' => $categories[1] ?? 2,
+                'stock' => 25,
+                'status' => 1,
+                'image' => 'margherita_pizza.jpg',
+                'ingredients' => 'Dough, Tomato Sauce, Cheese, Basil',
+                'sku' => Str::upper(Str::random(8)),
+                'remark' => '',
+            ],
+            [
+                'name' => 'Tuna Sandwich',
+                'price' => 200,
+                'category_id' => $categories[2] ?? 3,
+                'stock' => 35,
+                'status' => 1,
+                'image' => 'tuna_sandwich.jpg',
+                'ingredients' => 'Bread, Tuna, Lettuce, Mayo',
+                'sku' => Str::upper(Str::random(8)),
+                'remark' => '',
+            ],
+            [
+                'name' => 'Fettuccine Alfredo',
+                'price' => 380,
+                'category_id' => $categories[3] ?? 4,
+                'stock' => 20,
+                'status' => 1,
+                'image' => 'fettuccine_alfredo.jpg',
+                'ingredients' => 'Fettuccine, Cream, Cheese, Butter',
+                'sku' => Str::upper(Str::random(8)),
+                'remark' => '',
+            ],
+            [
+                'name' => 'Greek Salad',
+                'price' => 210,
+                'category_id' => $categories[4] ?? 5,
+                'stock' => 30,
+                'status' => 1,
+                'image' => 'greek_salad.jpg',
+                'ingredients' => 'Lettuce, Feta, Olive, Tomato, Cucumber',
+                'sku' => Str::upper(Str::random(8)),
+                'remark' => '',
+            ],
+            [
+                'name' => 'Vanilla Cake',
+                'price' => 140,
+                'category_id' => $categories[5] ?? 6,
+                'stock' => 20,
+                'status' => 1,
+                'image' => 'vanilla_cake.jpg',
+                'ingredients' => 'Flour, Sugar, Eggs, Butter, Vanilla',
+                'sku' => Str::upper(Str::random(8)),
+                'remark' => '',
+            ],
+            [
+                'name' => 'Orange Juice',
+                'price' => 70,
+                'category_id' => $categories[6] ?? 7,
+                'stock' => 80,
+                'status' => 1,
+                'image' => 'orange_juice.jpg',
+                'ingredients' => 'Orange, Water, Sugar',
+                'sku' => Str::upper(Str::random(8)),
+                'remark' => '',
+            ],
+            [
+                'name' => 'Grilled Chicken',
+                'price' => 550,
+                'category_id' => $categories[8] ?? 9,
+                'stock' => 25,
+                'status' => 1,
+                'image' => 'grilled_chicken.jpg',
+                'ingredients' => 'Chicken, Herbs, Spices',
+                'sku' => Str::upper(Str::random(8)),
+                'remark' => '',
+            ],
+            [
+                'name' => 'Salmon Sushi',
+                'price' => 950,
+                'category_id' => $categories[7] ?? 8,
+                'stock' => 15,
+                'status' => 1,
+                'image' => 'salmon_sushi.jpg',
+                'ingredients' => 'Salmon, Rice, Seaweed',
+                'sku' => Str::upper(Str::random(8)),
+                'remark' => 'Premium',
+            ],
+            [
+                'name' => 'French Toast',
+                'price' => 130,
+                'category_id' => $categories[9] ?? 10,
+                'stock' => 25,
+                'status' => 1,
+                'image' => 'french_toast.jpg',
+                'ingredients' => 'Bread, Eggs, Milk, Sugar, Butter',
+                'sku' => Str::upper(Str::random(8)),
+                'remark' => 'Breakfast special',
+            ],
+        ];
+
+        foreach ($foods as $food) {
+            Food::create($food);
+        }
+    }
+}
