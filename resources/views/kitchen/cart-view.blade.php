@@ -209,12 +209,12 @@
 
                             <div class="info-item d-flex justify-content-between align-items-center mb-2">
                                 <span>Customer Name</span>
-                                <span class="fw-semibold">{{ $order->customerName }}</span>
+                                <span class="fw-semibold">{{ $order->customerName == '0' ? 'N/A' : $order->customerName }}</span>
                             </div>
 
                             <div class="info-item d-flex justify-content-between align-items-center mb-2">
                                 <span>Customer Phone</span>
-                                <span class="fw-semibold">+880 {{ $order->customerPhone ?? 'N/A' }}</span>
+                                <span class="fw-semibold">+880 {{ $order->customerPhone == '0'  ? 'N/A' : $order->customerPhone }}</span>
                             </div>
 
                         </div>

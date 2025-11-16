@@ -69,11 +69,13 @@
                         @if($cart)
                         @foreach($cart as $key => $val)
                         <div class="col-lg-4 col-md-6 mt-3">
-                            <div class="card shadow-sm border-0 h-100">
+                            <div class="card shadow border-0 h-100">
                                 <div class="card-body p-3">
                                     <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <h5 class="mb-0 text-success">{{ $val->food->name }}</h5>
-                                        <span class="badge bg-light text-dark">#{{ $key + 1 }}</span>
+                                        <h5 class="fw-bold text-primary m-0">{{ $val->food->name }}</h5>
+                                        <span class="badge bg-light text-dark shadow-sm px-3 py-2 border">
+                                                #{{ $key + 1 }}
+                                            </span>
                                     </div>
 
                                     <div class="mb-2">
@@ -101,6 +103,8 @@
                                         </div>
                                     </div>
 
+                                    <hr class="my-3">
+
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="text-muted">Total:</div>
                                         <h6 class="mb-0 text-success">
@@ -112,6 +116,7 @@
                                 <div class="card-footer bg-white border-0 d-flex justify-content-end">
                                     <a href="{{url('/remove-to-cart/'.$val->foodId.'/'.$val->reg)}}"><button class="btn btn-sm btn-outline-danger remove-item-link" title="Remove item"><i class="fa-solid fa-trash"></i></button></a>
                                 </div>
+
                             </div>
                         </div>
                         @endforeach
@@ -124,99 +129,100 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 mt-2">
-                    <div class="card mt-2">
-                        <div class="card-body p-2 p-md-4">
-                            <form action="{{ route('confirm-order') }}" method="POST" id="myForm">
-                                @csrf
-                                <div class="card-body p-3 p-md-4">
-                                    <input type="hidden" id="cart-total-input" name="txtSubTotal" 
-                                        value="{{ $cart->sum(fn($i) => $i->price * $i->quantity) }}">
-                                    <input type="text" class="form-control mb-2" hidden value="{{ $invoice }}" name="txtInvoice">
-                                    <h4>INV-{{ $invoice }}</h4>
-                                    <hr>
-                                    <h4>Location</h4>
-                                    <p><i class="mdi mdi-map-marker"></i>{{$company->address}}</p>
-                                    <hr>
-                                    
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <p class="m-0">Total</p>
-                                        <h5 class="card-title m-0">৳<span id="cart-total">{{ number_format($cart->sum(fn($i) => $i->price * $i->quantity), 0) }}</span>/-</h5>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <h5 class="m-0">VAT %</h5>
-                                        <h5 class="card-title m-0">৳<span id="vat-amount">0.00</span>/-</h5>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <h5 class="m-0">Discount</h5>
-                                        <h5 class="card-title m-0">৳<span id="discount-amount">0.00</span>/-</h5>
-                                    </div>
-                                    <hr>
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <h5 class="m-0">Subtotal ({{ $count }} items)</h5>
-                                        <h5 class="card-title m-0">৳<span id="cart-subtotal">{{ number_format($cart->sum(fn($i) => $i->price * $i->quantity), 0) }}</span>/-</h5>
-                                    </div>
-                                    <!-- payment section -->
-
-                                    <div class="form-group row">
-                                        <label for="num4" class="col-sm-3 col-form-label">VAT (%) :</label>
-                                        <div class="col-sm-9">
-                                            <input type="number" class="form-control" id="num4" name="txtVAT" value="0" placeholder="VAT" onkeyup="calculateAmount()" onchange="calculateAmount()" min="0">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label for="num3" class="col-sm-3 col-form-label">Discount:</label>
-                                        <div class="col-sm-9">
-                                            <input type="number" class="form-control" id="num3" name="txtDiscount" value="0" placeholder="Discount" onkeyup="calculateAmount()" onchange="calculateAmount()" min="0">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label for="paymentMethods" class="col-sm-3 col-form-label">Payment:</label>
-                                        <div class="col-sm-9">
-                                            <select name="paymentMethods" id="paymentMethods" class="col-sm-3 form-control">
-                                                <option disabled>-- Select Payment Method --</option>
-                                                @foreach($payMathod as $val)
-                                                <option value="{{$val->id}}">{{ $val->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label for="num2" class="col-sm-3 col-form-label">Pay:</label>
-                                        <div class="col-sm-9">
-                                            <input type="number" class="form-control" id="num2" name="txtPay" placeholder="Pay" onkeyup="calculateAmount()" onchange="calculateAmount()" min="0" required>
-                                        </div>
-                                    </div><hr>
-
-                                    <div id="customer-info" style="display: none; margin-top: 10px;">
-                                        <label for="customerName">Customer Name:</label>
-                                        <input type="text" name="txtCustomerName" id="customerName" value="Samim Hossain" placeholder="Enter Name" class="form-control mb-2">
-
-                                        <label for="customerPhone">Customer Phone:</label>
-                                        <input type="text" name="txtCustomerPhone" id="customerPhone" value="01762164746" placeholder="Enter Phone" class="form-control">
-                                    </div>
-
-                                    <br>
-
-                                    <div class="form-group row">
-                                        <label class="col-sm-3 col-form-label"></label>
-                                        <div class="col-sm-9">
-                                            <p id="result" class="display-6 text-danger">Amount: 00/-</p>
-                                        </div>
-                                    </div>
-
-                                    
-
-                                    <button type="submit" id="confirmBtn" class="btn btn-outline-success w-100">
-                                        <span id="btnText">
-                                            <h4 class="m-0">Confirm</h4>
-                                        </span>
-                                    </button>
+                    <div class="card shadow mt-2">
+                        <form action="{{ route('confirm-order') }}" method="POST" id="myForm">
+                            @csrf
+                            <div class="card-body p-3 p-md-4">
+                                <input type="hidden" id="cart-total-input" name="txtSubTotal" 
+                                    value="{{ $cart->sum(fn($i) => $i->price * $i->quantity) }}">
+                                <input type="text" class="form-control mb-2" hidden value="{{ $invoice }}" name="txtInvoice">
+                                
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h4 class="fw-bold mb-0">#INV-{{ $invoice }}</h4>
+                                    <span class="text-muted">
+                                        <i class="fa-solid fa-location-dot"></i> {{ $company->address }}
+                                    </span>
                                 </div>
-                            </form> 
-                        </div>
+                                <hr>
+                                
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <p class="m-0">Total</p>
+                                    <h5 class="card-title m-0">৳<span id="cart-total">{{ number_format($cart->sum(fn($i) => $i->price * $i->quantity), 0) }}</span>/-</h5>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="m-0">VAT %</h5>
+                                    <h5 class="card-title m-0">৳<span id="vat-amount">0.00</span>/-</h5>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="m-0">Discount</h5>
+                                    <h5 class="card-title m-0">৳<span id="discount-amount">0.00</span>/-</h5>
+                                </div>
+                                <hr>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="m-0">Subtotal ({{ $count }} items)</h5>
+                                    <h5 class="card-title m-0">৳<span id="cart-subtotal">{{ number_format($cart->sum(fn($i) => $i->price * $i->quantity), 0) }}</span>/-</h5>
+                                </div>
+                                <!-- payment section -->
+
+                                <div class="form-group row">
+                                    <label for="num4" class="col-sm-3 col-form-label">VAT (%) :</label>
+                                    <div class="col-sm-9">
+                                        <input type="number" class="form-control" id="num4" name="txtVAT" value="0" placeholder="VAT" onkeyup="calculateAmount()" onchange="calculateAmount()" min="0">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="num3" class="col-sm-3 col-form-label">Discount:</label>
+                                    <div class="col-sm-9">
+                                        <input type="number" class="form-control" id="num3" name="txtDiscount" value="0" placeholder="Discount" onkeyup="calculateAmount()" onchange="calculateAmount()" min="0">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="paymentMethods" class="col-sm-3 col-form-label">Payment:</label>
+                                    <div class="col-sm-9">
+                                        <select name="paymentMethods" id="paymentMethods" class="col-sm-3 form-control">
+                                            <option disabled>-- Select Payment Method --</option>
+                                            @foreach($payMathod as $val)
+                                            <option value="{{$val->id}}">{{ $val->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="num2" class="col-sm-3 col-form-label">Pay:</label>
+                                    <div class="col-sm-9">
+                                        <input type="number" class="form-control" id="num2" name="txtPay" placeholder="Pay" onkeyup="calculateAmount()" onchange="calculateAmount()" min="0" required>
+                                    </div>
+                                </div><hr>
+
+                                <div id="customer-info" style="display: none; margin-top: 10px;">
+                                    <label for="customerName">Customer Name:</label>
+                                    <input type="text" name="txtCustomerName" id="customerName" value="Samim Hossain" placeholder="Enter Name" class="form-control mb-2">
+
+                                    <label for="customerPhone">Customer Phone:</label>
+                                    <input type="text" name="txtCustomerPhone" id="customerPhone" value="01762164746" placeholder="Enter Phone" class="form-control">
+                                </div>
+
+                                <br>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label"></label>
+                                    <div class="col-sm-9">
+                                        <p id="result" class="display-6 text-danger">Amount: 00/-</p>
+                                    </div>
+                                </div>
+
+                                
+
+                                <button type="submit" id="confirmBtn" class="btn btn-outline-success w-100">
+                                    <span id="btnText">
+                                        <h4 class="m-0">Confirm</h4>
+                                    </span>
+                                </button>
+                            </div>
+                        </form>
                     </div>        
                 </div>
             </div>
