@@ -30,4 +30,9 @@ class Order extends Model
     {
         return $this->belongsTo(Admin::class, 'user_id', 'id');
     }
+
+    public function payment()
+    {
+        return $this->belongsTo(PaymentMethod::class, 'paymentMethod', 'id');
+    }
 }

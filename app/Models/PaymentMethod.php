@@ -14,4 +14,9 @@ class PaymentMethod extends Model
         'description',
         'status',
     ];
+
+    public function payment()
+    {
+        return $this->hasMany(Order::class, 'paymentMethod', 'id');
+    }
 }

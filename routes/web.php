@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\AdminController;
 use App\Http\Controllers\Food\FoodController;
 use App\Http\Controllers\Food\CartController;
 use App\Http\Controllers\Order\OrderController;
+use App\Http\Controllers\Order\SaleReportController;
 use App\Http\Controllers\Kitchen\KitchenController;
 use App\Http\Controllers\Stock\StockController;
 use App\Http\Controllers\Expenses\ExpensesController;
@@ -61,6 +62,13 @@ Route::group(['middleware' => ['admin']], function (){
     Route::get('/order-details', [OrderController::class, 'orderDetails'])->name('order-details-list');
     Route::post('/due-collection/{reg}', [OrderController::class, 'dueCollection']);
     Route::get('/due-details', [OrderController::class, 'dueDetails'])->name('due-list-view');
+
+    Route::get('/total-sale-report', [SaleReportController::class, 'index'])->name('date-wise-total-sale');
+    Route::get('/filter-total-sale', [SaleReportController::class, 'filterSaleReport'])->name('filter-total-sale');
+    Route::get('/user-wise-total-sale', [SaleReportController::class, 'userTotalSale'])->name('user-wise-total-sale');
+    Route::get('/user-wise-total-sale-filter', [SaleReportController::class, 'filterUserReport'])->name('filter-user-total-sale');
+    Route::get('/payment-wise-total-sale', [SaleReportController::class, 'paymentSaleReport'])->name('payment-wise-total-sale');
+    Route::get('/payment-total-sale-filter', [SaleReportController::class, 'paymentSaleFilter'])->name('payment-mathod-total-sale');
 
     Route::get('/kitchen', [KitchenController::class, 'index'])->name('kitchen-view');
     Route::get('/order-item/{reg}', [KitchenController::class, 'orderItem'])->name('view-order-item');
