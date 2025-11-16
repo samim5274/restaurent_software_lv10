@@ -67,45 +67,46 @@
 
             <!-- [ Main Content ] start -->
             <div class="row">
-                <div class="col-12">
+                <div class="col-lg-9 col-md-6">
                     <div class="row g-4" id="printableTable">
-
                         @if($food->count())
                             @foreach($food as $key => $val)
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                                <div class="card h-100 border-0 shadow-sm rounded-3">
+                            <div class="col-lg-4 col-md-6 col-sm-12">
+                                <div class="card h-100 border-0 shadow">
                                     <div class="card-body p-4">
 
-                                        {{-- Header: Name + Index --}}
+                                        <!-- Header -->
                                         <div class="d-flex justify-content-between align-items-center mb-3">
                                             <h5 class="fw-bold text-primary m-0">{{ $val->food->name }}</h5>
-                                            <span class=" text-secondary px-3 py-2">
+                                            <span class="badge bg-light text-dark shadow-sm px-3 py-2 border">
                                                 #{{ $key + 1 }}
                                             </span>
                                         </div>
 
-                                        {{-- Price --}}
-                                        <div class="mb-3">
-                                            <small class="text-muted d-block">Price per item</small>
-                                            <strong class="fs-5 text-dark">৳{{ number_format($val->price, 2) }}</strong>
+                                        <!-- Price -->
+                                        <div class="mb-4">
+                                            <small class="text-muted">Price per Item</small>
+                                            <h4 class="fw-semibold mt-1">
+                                                ৳{{ number_format($val->price, 2) }}
+                                            </h4>
                                         </div>
 
-                                        {{-- Quantity --}}
+                                        <!-- Quantity -->
                                         <div class="d-flex justify-content-between align-items-center mb-3">
-                                            <small class="text-muted">Quantity:</small>
-                                            <span class="badge bg-primary rounded-pill px-3 py-2">
+                                            <span class="text-muted">Quantity</span>
+                                            <span class="badge bg-primary rounded-pill px-3 py-2 fs-6 shadow-sm">
                                                 {{ $val->quantity }} Pcs
                                             </span>
                                         </div>
 
-                                        <hr>
+                                        <hr class="my-3">
 
-                                        {{-- Total --}}
+                                        <!-- Total -->
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <span class="text-muted">Total:</span>
-                                            <h5 class="fw-bold text-primary">
+                                            <span class="fw-semibold text-muted">Total</span>
+                                            <h4 class="fw-bold text-success m-0">
                                                 ৳{{ number_format($val->price * $val->quantity, 2) }}
-                                            </h5>
+                                            </h4>
                                         </div>
 
                                     </div>
@@ -114,6 +115,7 @@
                             @endforeach
 
                         @else
+                            <!-- No data -->
                             <div class="col-12 text-center py-5">
                                 <i class="mdi mdi-cart-outline display-3 text-muted mb-3"></i>
                                 <p class="fs-5 text-muted">No items in your cart.</p>
@@ -121,6 +123,103 @@
                         @endif
 
                     </div>
+
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="card shadow border-0">
+                        <div class="card-body p-4">
+
+                            <!-- Invoice Header -->
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h4 class="fw-bold mb-0">#INV-{{ $order->reg }}</h4>
+                                <span class="text-muted">
+                                    <i class="mdi mdi-map-marker-outline"></i> {{ $company->address }}
+                                </span>
+                            </div>
+
+                            <hr>
+
+                            <!-- Summary Section -->
+                            <h5 class="fw-bold text-secondary mb-3">Order Summary</h5>
+
+                            <div class="summary-item d-flex justify-content-between align-items-center mb-2">
+                                <span>Total</span>
+                                <span class="fw-semibold">৳{{ number_format($order->total,2) }}/-</span>
+                            </div>
+
+                            <div class="summary-item d-flex justify-content-between align-items-center mb-2">
+                                <span>VAT</span>
+                                <span class="fw-semibold">৳{{ number_format($order->vat,2) }}/-</span>
+                            </div>
+
+                            <div class="summary-item d-flex justify-content-between align-items-center mb-2">
+                                <span>Discount</span>
+                                <span class="fw-semibold text-danger">৳{{ number_format($order->discount,2) }}/-</span>
+                            </div>
+
+                            <hr>
+
+                            <div class="summary-item d-flex justify-content-between align-items-center mb-2">
+                                <span>Subtotal</span>
+                                <span class="fw-bold">৳{{ number_format($order->payable,2) }}/-</span>
+                            </div>
+
+                            <div class="summary-item d-flex justify-content-between align-items-center mb-2">
+                                <span>Paid</span>
+                                <span class="fw-bold text-success">৳{{ number_format($order->pay,2) }}/-</span>
+                            </div>
+
+                            <div class="summary-item d-flex justify-content-between align-items-center mb-3">
+                                <span>Due</span>
+                                <span class="fw-bold text-danger">৳{{ number_format($order->due,2) }}/-</span>
+                            </div>
+
+                            <!-- Due Collection Section -->
+                            @if($dueCollection)
+                                <hr>
+                                <h5 class="fw-bold text-secondary mb-2">Due Collection</h5>
+
+                                @foreach($dueCollection as $val)
+                                    <div class="summary-item d-flex justify-content-between align-items-center mb-2">
+                                        <span>Collected</span>
+                                        <span class="fw-semibold">৳{{ number_format($val->pay,2) }}</span>
+                                    </div>
+
+                                    <div class="summary-item d-flex justify-content-between align-items-center mb-2">
+                                        <span>Due Discount</span>
+                                        <span class="fw-semibold text-danger">৳{{ number_format($val->discount,2) }}</span>
+                                    </div>
+
+                                    <div class="summary-item d-flex justify-content-between align-items-center mb-3">
+                                        <span>Remaining Due</span>
+                                        <span class="fw-bold text-danger">৳{{ number_format($val->due,2) }}</span>
+                                    </div>
+                                @endforeach
+                            @endif
+                            
+                            <hr>
+
+                            <!-- Payment & Customer Info -->
+                            <h5 class="fw-bold text-secondary mb-3">Payment & Customer Info</h5>
+
+                            <div class="info-item d-flex justify-content-between align-items-center mb-2">
+                                <span>Payment Method</span>
+                                <span class="fw-semibold">{{ $order->payment->name }}</span>
+                            </div>
+
+                            <div class="info-item d-flex justify-content-between align-items-center mb-2">
+                                <span>Customer Name</span>
+                                <span class="fw-semibold">{{ $order->customerName }}</span>
+                            </div>
+
+                            <div class="info-item d-flex justify-content-between align-items-center mb-2">
+                                <span>Customer Phone</span>
+                                <span class="fw-semibold">+880 {{ $order->customerPhone ?? 'N/A' }}</span>
+                            </div>
+
+                        </div>
+                    </div>
+
                 </div>
             </div>
 

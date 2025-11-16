@@ -81,9 +81,10 @@
                                     <thead class="table-primary sticky-top">
                                         <tr>
                                             <th class="text-center" style="width: 5%;">#</th>
+                                            <th class="text-center" style="width: 10%;">Date</th>
                                             <th style="width: 40%;">Customer Name</th>
                                             <th style="width: 25%;">Order ID</th>
-                                            <th class="text-center" style="width: 15%;">Status</th>
+                                            <th class="text-center" style="width: 10%;">Status</th>
                                             <th class="text-center" style="width: 15%;">Actions</th>
                                         </tr>
                                     </thead>
@@ -91,8 +92,9 @@
                                         @foreach($data as $key => $val)
                                         <tr>
                                             <td class="text-center">{{ $loop->iteration }}</td>
+                                            <td class="text-center">{{ $val->date }}</td>
                                             <td>
-                                                <a href="{{ url('/order-item/'. $val->reg) }}" class="text-primary text-decoration-none">{{ $val->customerName ?? 'N/A' }}</a>
+                                                <a href="{{ url('/order-item/'. $val->reg) }}" class="text-primary text-decoration-none">{{ $val->customerName == '0' ? 'N/A' : $val->customerName }}</a>
                                             </td>
                                             <td class="fw-bold">
                                                 <a href="{{ url('/order-item/'. $val->reg) }}" class="text-primary text-decoration-none">ORD-{{$val->reg}}</a>
@@ -107,13 +109,17 @@
                                                 @endif
                                             </td>
                                             <td class="text-center">
+                                                <button class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#due{{$val->id}}"  style="cursor: pointer;">
+                                                    <i class="fa-solid fa-hand-holding-dollar"></i>
+                                                </button>                                                
+                                                
+                                                <!-- <a href="{{ url('/edit/cart/'.$val->reg) }}" class="btn btn-sm btn-outline-primary me-2" title="Share or View Details">
+                                                    <i class="fa-solid fa-pen-to-square"></i>
+                                                </a>     -->
+                                                
                                                 <a href="{{ url('/order-invoice-print/'.$val->reg) }}" target="_blank" 
                                                 class="btn btn-sm btn-outline-primary me-2" title="Print Invoice">
                                                     <i class="fa-solid fa-print"></i>
-                                                </a>
-                                                
-                                                <a href="{{ url('/edit/cart/'.$val->reg) }}" class="btn btn-sm btn-outline-primary me-2" title="Share or View Details">
-                                                    <i class="fa-solid fa-pen-to-square"></i>
                                                 </a>
                                             </td>
                                         </tr>

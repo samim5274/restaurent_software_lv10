@@ -25,7 +25,9 @@ class KitchenController extends Controller
         if(empty($food)){
             return redirect()->back()->with('error', 'Order items not found. Please try another. Thank You!');
         }
-        return view('kitchen.cart-view', compact('food','company'));
+        $order = Order::where('reg', $reg)->first();
+        $dueCollection = DueCollection::where('reg', $reg)->get();
+        return view('kitchen.cart-view', compact('food','company','order','dueCollection'));
     }
 
     public function updateStatus(Request $request, $reg){

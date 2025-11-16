@@ -81,9 +81,10 @@
                                     <thead class="table-primary sticky-top">
                                         <tr>
                                             <th class="text-center" style="width: 5%;">#</th>
-                                            <th style="width: 40%;">Customer Name</th>
+                                            <th class="text-center" style="width: 10%;">Date</th>
+                                            <th style="width: 40%;">C. Name</th>
                                             <th style="width: 25%;">Order ID</th>
-                                            <th class="text-center" style="width: 15%;">Status</th>
+                                            <th class="text-center" style="width: 10%;">Status</th>
                                             <th class="text-center" style="width: 15%;">Actions</th>
                                         </tr>
                                     </thead>
@@ -91,8 +92,9 @@
                                         @foreach($order as $key => $val)
                                         <tr>
                                             <td class="text-center">{{ $loop->iteration }}</td>
+                                            <td class="text-center">{{ $val->date }}</td>
                                             <td>
-                                                <a href="{{ url('/order-item/'. $val->reg) }}" class="text-primary text-decoration-none">{{ $val->customerName ?? 'N/A' }}</a>
+                                                <a href="{{ url('/order-item/'. $val->reg) }}" class="text-primary text-decoration-none">{{ $val->customerName == '0' ? 'N/A' : $val->customerName }}</a>
                                             </td>
                                             <td class="fw-bold">
                                                 <a href="{{ url('/order-item/'. $val->reg) }}" class="text-primary text-decoration-none">ORD-{{$val->reg}}</a>

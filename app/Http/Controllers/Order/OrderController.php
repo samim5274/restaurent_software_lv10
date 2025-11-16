@@ -114,6 +114,61 @@ class OrderController extends Controller
         ]);
     }
 
+    // public function dueCollection(Request $request, $reg){
+    //     $order = Order::where('reg', $reg)->first();
+        
+    //     if (!$order) {
+    //         return back()->with('error', 'Order not found!');
+    //     }
+
+    //     $validated = $request->validate([
+    //         'txtDiscount' => 'nullable|numeric|min:0',
+    //         'txtPay'      => 'nullable|numeric|min:0'
+    //     ]);
+
+    //     $dueCollections = DueCollection::where('reg', $reg)->first();
+    //     if($dueCollections){
+    //         return redirect()->back()->with('warning', 'Due payment has already been processed for Invoice: ' . $reg);
+    //     }
+
+    //     $pay = $request->input('txtPay', '');
+    //     $discount = $request->input('txtDiscount', '');
+
+    //     $oldDue = $order->due;
+    //     $oldPayable = $order->payable;
+
+    //     if($discount > $oldDue) {
+    //         return redirect()->back()->with('warning', 'Discount more then due. It is not possible.');
+    //     }
+
+    //     $total = $order->total;
+    //     $payable = $total - ($discount + $order->discount);
+
+    //     $alreadyPaid = $order->pay ?? 0;
+    //     $remainingDue = max($payable - $alreadyPaid, 0);
+
+    //     if ($pay > $remainingDue) {
+    //         $pay = $remainingDue;
+    //     }
+
+    //     $newDue = max($remainingDue - $pay, 0);
+    //     $previousDue =  $payable + $discount;
+
+    //     $data           = new DueCollection();
+    //     $data->reg      = $order->reg;
+    //     $data->total    = $previousDue;
+    //     $data->discount = $discount;
+    //     $data->pay      = $pay;
+    //     $data->due      = $newDue;
+    //     $data->user_id  = Auth::guard('admin')->user()->id;
+    //     $data->save();
+
+    //     $order->status = $newDue <= 0 ? 1 : 0; // 1 Fully paid and 0 due
+    //     $order->update();
+
+    //     return redirect()->back()->with('success', 'Due collection successfully done. ORD-'.$reg);
+    // }
+
     public function dueCollection(Request $request, $reg){
         $order = Order::where('reg', $reg)->first();
         
@@ -141,29 +196,26 @@ class OrderController extends Controller
             return redirect()->back()->with('warning', 'Discount more then due. It is not possible.');
         }
 
-        $total = $order->total;
-        $payable = $total - ($discount + $order->discount);
+        $payable = $oldDue - $discount;
 
-        $alreadyPaid = $order->pay ?? 0;
-        $remainingDue = max($payable - $alreadyPaid, 0);
-
-        if ($pay > $remainingDue) {
-            $pay = $remainingDue;
+        if ($pay >= $payable) {
+            $pay = $payable;
+        } else {
+            return redirect()->back()->with('warning', 'Due collection failed. Must be paid full due. Thank You!');
         }
 
-        $newDue = max($remainingDue - $pay, 0);
-        $previousDue =  $payable + $discount;
+        $remainingDue = $oldDue - ($pay + $discount);
 
         $data           = new DueCollection();
         $data->reg      = $order->reg;
-        $data->total    = $previousDue;
+        $data->total    = $order->total;
         $data->discount = $discount;
         $data->pay      = $pay;
-        $data->due      = $newDue;
+        $data->due      = $remainingDue; // find new due
         $data->user_id  = Auth::guard('admin')->user()->id;
         $data->save();
 
-        $order->status = $newDue <= 0 ? 1 : 0; // 1 Fully paid and 0 due
+        $order->status = $remainingDue <= 0 ? 1 : 0; // 1 Fully paid and 0 due
         $order->update();
 
         return redirect()->back()->with('success', 'Due collection successfully done. ORD-'.$reg);
